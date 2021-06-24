@@ -3,8 +3,8 @@
     
     const scroller    = document.getElementById('scroller');
 
-    var   prodActive, wProd, velocityPd, velocityLop,
-          animated    = false, start = true;
+    var   prodActive, wProd, velocityPd, velocityLop, atualPos,
+          animated    = false, start = true, autoplay = true, more = true;
 
 
     const el1 = document.createElement('div');
@@ -45,6 +45,7 @@
     const goToProd = index => {
 
         animated = true;
+        atualPos = index;
 
         let prod = listProds[index];
         let scrl = (index - 1) * wProd;
@@ -61,7 +62,6 @@
             
             if((soma && scroller.scrollLeft >= scrl) || (!soma && scroller.scrollLeft <= scrl)){
                 scroller.scrollLeft = scrl;
-                console.log(wid1, wid2);
                 prod.style.minWidth = "";
                 prodActive.style.minWidth = "";
                 animated = false;
@@ -91,15 +91,42 @@
         el.addEventListener('click', e => {
             e.preventDefault();
             if(!animated && key != prodActive.indexPosition && key > 0 && key < listProds.length -1){
+                autoplay = false;
                 goToProd(key)
             }
         })
     })
 
+    atualPos = listProds.length % 2 == 0 ? listProds.length / 2 - 1 : Math.floor(listProds.length / 2);
 
-    activeProd(listProds.length % 2 == 0 ? listProds.length / 2 - 1 : Math.floor(listProds.length / 2))
-    
+    activeProd(atualPos)
     load()
+
+    let interval = setInterval(() => {
+        
+        if(!autoplay){
+            clearInterval(interval);
+            return;
+        }
+        
+        let newPos = more ? atualPos + 1 : atualPos - 1;
+        
+        if(more && newPos == listProds.length - 1){
+            more = false;
+            newPos = atualPos - 1;
+        }
+        
+        if(!more && newPos == 0){
+            more = true;
+            newPos = atualPos + 1;
+        }
+        
+
+        goToProd(newPos);
+
+    }, 2000);
+
+    
 
     window.onload = _ => {
         start = false;

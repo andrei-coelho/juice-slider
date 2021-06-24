@@ -6,9 +6,16 @@ body {
 
 a { text-decoration: none; }
 
-.ic-shop {
-    fill:#4D4D4D;
+.controller {
+    background-color: black;
+    padding: 10px;
+    text-align: center;
 }
+
+
+.controller g { fill: white; }
+
+.ic-shop { fill:#4D4D4D; }
 
 #scroller {
     display: flex;
