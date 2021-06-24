@@ -1,11 +1,22 @@
 
 (_ => {
     
-    const scroller    = document.getElementById('scroller'),
-          listProds   = Array.from(scroller.getElementsByClassName('prod'));
+    const scroller    = document.getElementById('scroller');
 
     var   prodActive, wProd, velocityPd, velocityLop,
           animated    = false, start = true;
+
+
+    const el1 = document.createElement('div');
+    el1.classList.add('prod');
+
+    const el2 = document.createElement('div');
+    el2.classList.add('prod');
+    
+    scroller.insertAdjacentElement('afterbegin',el1)
+    scroller.insertAdjacentElement('beforeend',el2)
+
+    const listProds = Array.from(scroller.getElementsByClassName('prod'))
 
     const load = _ => {
         
@@ -16,7 +27,7 @@
 
         wProd = Math.floor((scroller.scrollWidth - window.innerWidth) / (listProds.length - 3));
         velocityPd  = window.innerWidth > 768 ? 20 : 15;
-        velocityLop = window.innerWidth > 768 ? 15 : 25;
+        velocityLop = window.innerWidth > 768 ? 15 : window.innerWidth < 500 ? 25 : 20;
         scroller.scrollLeft = (prodActive.indexPosition - 1) * wProd;
         
     }
